@@ -24,6 +24,6 @@ echo 'Snakemake version:'
 snakemake --version
 
 echo "Start: $(date)"
-snakemake --rerun-triggers mtime --profile profile --cores 12
+snakemake --profile profile --cores 12
 echo "Exit code: ${?}"
 echo "Finish: $(date)"
