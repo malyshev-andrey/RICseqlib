@@ -1,0 +1,14 @@
+---
+name: preprocessing
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - bbmap==39.06
+  - fastqc==0.12.1
+  - trimmomatic==0.39
+  - multiqc==1.19
+  - cutadapt==4.6
+  - star==2.7.11b
+  - entrez-direct==16.2

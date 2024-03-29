@@ -1,0 +1,6 @@
+---
+snakefile: ./Snakefile
+printshellcmds: True
+use-conda: True
+conda-frontend: conda
+latency-wait: 60

@@ -1,0 +1,67 @@
+---
+samples:
+  SRR24172920:
+    '1': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR241/020/SRR24172920/SRR24172920_1.fastq.gz
+    '2': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR241/020/SRR24172920/SRR24172920_2.fastq.gz
+  SRR24172921:
+    '1': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR241/021/SRR24172921/SRR24172921_1.fastq.gz
+    '2': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR241/021/SRR24172921/SRR24172921_2.fastq.gz
+  SRR17136204:
+    '1': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/004/SRR17136204/SRR17136204_1.fastq.gz
+    '2': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/004/SRR17136204/SRR17136204_2.fastq.gz
+  SRR17136205:
+    '1': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/005/SRR17136205/SRR17136205_1.fastq.gz
+    '2': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/005/SRR17136205/SRR17136205_2.fastq.gz
+  SRR17136206:
+    '1': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/006/SRR17136206/SRR17136206_1.fastq.gz
+    '2': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/006/SRR17136206/SRR17136206_2.fastq.gz
+  SRR17136207:
+    '1': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/007/SRR17136207/SRR17136207_1.fastq.gz
+    '2': ftp://ftp.sra.ebi.ac.uk/vol1/fastq/SRR171/007/SRR17136207/SRR17136207_2.fastq.gz
+mates:
+  - 1
+  - 2
+genome:
+  fasta: 'https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/GRCh38.primary_assembly.genome.fa.gz'
+  gff3: 'https://ftp.ebi.ac.uk/pub/databases/gencode/Gencode_human/release_44/gencode.v44.primary_assembly.annotation.gff3.gz'
+fastqc_threads: 4
+adapters: https://raw.githubusercontent.com/usadellab/Trimmomatic/main/adapters/TruSeq3-PE-2.fa
+trimmomatic:
+  threads: 4
+  encoding: '-phred33'
+  clip: 'ILLUMINACLIP:{}:2:30:7:8:true LEADING:25 TRAILING:20 SLIDINGWINDOW:4:15 MINLEN:30'
+cutadapt:
+  cut1: "-b 'A{100}' -b 'C{100}' -b 'G{100}' -b 'T{100}'"
+  cut2: "-B 'A{100}' -B 'C{100}' -B 'G{100}' -B 'T{100}'"
+  threads: 4
+  params: '-n 3 --minimum-length=30 -e 0.1'
+rRNA_AC: 'NR_046235.3'
+STAR:
+  indexing_threads: 12
+  rRNA_genomeSAindexNbases: 5
+  genome_genomeSAindexNbases: 14
+  sjdb: >-
+    --sjdbOverhang 149
+    --sjdbGTFtagExonParentTranscript Parent
+  alignment_threads: 8
+  peOverlapNbasesMin: 15
+  alignment_args: >-
+    --outSAMtype BAM Unsorted
+    --outReadsUnmapped Fastx
+    --chimOutType WithinBAM SoftClip
+    --outFilterMultimapNmax 100
+    --outSAMmultNmax 1
+    --outSAMattributes NH HI AS nM NM MD jM jI ch
+    --alignIntronMin 1
+    --scoreGapNoncan -4
+    --scoreGapATAC -4
+    --chimSegmentMin 15
+    --chimMultimapNmax 1
+    --chimJunctionOverhangMin 15
+    --limitOutSJcollapsed 10000000
+    --limitIObufferSize 1500000000 1500000000
+    --alignSJoverhangMin 15
+    --alignSJDBoverhangMin 10
+    --alignSJstitchMismatchNmax 5 -1 5 5
+collect_tags_threads: 8
+alignment_quality: "-F 256 -q 30"
