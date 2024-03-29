@@ -4,7 +4,7 @@
 Clone this repository with the following command:
 
 ```{bash}
-git clone https://github.com/malyshev-andrey/RICseqlib.git .
+git clone https://github.com/malyshev-andrey/RICseqlib.git ./RICseqlib
 ```
 
 ## Dependencies
