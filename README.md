@@ -29,3 +29,6 @@ cores is 12):
 snakemake --profile profile --cores 12
 ```
 
+## Configuration
+
+The file `pipeline_config.yml` can be used to specify samples names, links or paths to `.fastq` files with raw RIC-seq reads, a genome assembly version and annotation. Also, it's possible to modify the arguments of programs included in the pipeline (see respective sections of yaml file).
