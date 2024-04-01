@@ -27,6 +27,7 @@ VOTING_BED = join(STEPS[8], basename(GENOME['gff3']).removesuffix('.gff3') + '.g
 rule all:
     input:
         raw_multiqc=join(STEPS[0], "multiqc", "multiqc_report.html"),
+        final_multiqc=join(STEPS[4], "multiqc", "multiqc_report.html"),
         contacts=join(STEPS[9], 'merge.intermolecular.pairwise.tsv')
 
 
@@ -242,6 +243,36 @@ rule cutadapt:
 
         cutadapt -j {threads} {params.cut1} {params.params}\
             -o {output.mate2_up} {input.mate2_up} &> {log.unpair2}
+        """
+
+
+rule final_multiqc:
+    input:
+        fastqc = expand(
+            join(STEPS[4], "fastqc", "{sample}_{mate}.dedup.clean.pair.cut_fastqc.html"),
+            sample=config["samples"],
+            mate=config["mates"]
+        ),
+        STAR = expand(
+            join(STEPS[6], "{sample}_genome.log"),
+            sample=config["samples"]
+        )
+    output:
+        join(STEPS[4], "multiqc", "multiqc_report.html"),
+        directory(join(STEPS[4], "multiqc", "multiqc_data"))
+    log:
+        join(STEPS[4], "multiqc", "multiqc.log")
+    resources:
+        cpus=1,
+        mem_gb=1
+    params:
+        outdir=join(STEPS[4], "multiqc"),
+        target=f'{STEPS[2]} {STEPS[3]} {STEPS[4]} {STEPS[6]}'
+    conda:
+        "preprocessing.yml"
+    shell:
+        """
+        multiqc -x '*unpair*' --outdir {params.outdir} {params.target} &> {log}
         """
 
 
